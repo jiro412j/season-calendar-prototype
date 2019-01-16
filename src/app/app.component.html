@@ -1,20 +1,35 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+<div class="container">
+  <div class="m-15 content-frame">
+    <div class="row">
+      <div class="col-sm-6 d-flex align-items-center">
+        <h5 class="m-b-0 m-r-10">Season 2019</h5>
+      </div>
+    </div>
 
+    <div class="month-frame w-100percent">
+      <div class="calendar-frame flex-1 date">
+        <div class="calendar-block day" [ngClass]="{'no-date': day === 'hello'}" *ngFor="let day of dayList">
+          <span *ngIf="day !== 'hello'">{{ day }}</span>
+        </div>
+      </div>
+      <div *ngFor="let month of monthList; let monthIndex = index" class="flex-1">
+        <div class="month-name">
+          {{ month.name }}
+        </div>
+        <div class="calendar-block" [ngClass]="{'no-date': obj.date === 'hello',
+           'middle-week': checkMiddleWeek(index), 'weekend': checkWeekend(index)}"
+          *ngFor="let obj of month.dateNum; let index = index">
+          <div *ngIf="obj.date !== 'hello'" class="date-index flex-1">
+            {{ obj.date }}
+          </div>
+          <div *ngIf="obj.date === 'hello'" class="date-index flex-1"></div>
+          <div class="d-flex flex-1" dragula="VAMPIRES" [(dragulaModel)]="obj.match_day">
+            <div class="match-day" *ngFor="let matchDay of obj.match_day" [ngStyle]="{'height': ((matchDay.date_range + 1) * 35) + 'px', 'background-color': matchDay.color}">
+              {{ matchDay.short_name || matchDay.name }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

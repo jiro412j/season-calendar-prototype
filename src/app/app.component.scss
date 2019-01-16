@@ -1,0 +1,187 @@
+.month-frame {
+  display: flex;
+  flex-direction: row;
+}
+
+.month-name {
+  height: 35px;
+  font-size: 9px;
+  text-align: center;
+  font-weight: bold;
+  line-height: 20px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #a7a7a7;
+  border-left: 0;
+}
+
+.date {
+  line-height: 20px;
+  justify-content: center;
+  align-items: center;
+  max-width: 40px;
+}
+
+.calendar-frame {
+  .calendar-block:first-child {
+    border-top: 1px solid #a7a7a7;
+  }
+}
+
+.calendar-block {
+  font-size: 9px;
+  height: 35px;
+  background: #ffffff;
+  border-bottom: 1px solid #a7a7a7;
+  border-right: 1px solid #a7a7a7;
+  display: flex;
+  transition: 300ms background;
+  cursor: pointer;
+
+  &.no-date {
+    background: #dfe6e9;
+  }
+
+  &.weekend {
+    background: #fab1a0 !important;
+  }
+
+  &.hover-block {
+    background: black;
+  }
+
+  &.day {
+    justify-content: center;
+    align-items: center;
+    border-left: 1px solid #a7a7a7;
+  }
+
+  .date-index {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 25px;
+    max-width: 25px;
+  }
+
+  &:hover {
+    background: lighten(#dfe6e9, 5%) !important;
+  }
+}
+
+.match-day {
+  border-left: 0;
+  background: #cccccc;
+  color: #ffffff;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  display: flex;
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+  border-bottom: 1px solid #a7a7a7;
+}
+
+.fake-match-day {
+  background: transparent;
+  border: none;
+}
+
+.tournament-list {
+  display: flex;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+
+  .tournament {
+    display: flex;
+    flex: 1;
+    background: #ccc;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 6px 0 rgba(0, 0, 0, .07);
+    margin-right: 10px;
+    max-width: 200px;
+    min-width: 200px;
+    font-weight: 700;
+    font-size: 13px;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    cursor: pointer;
+    margin-bottom: 15px;
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &.unselected {
+      background: #cccccc !important;
+    }
+  }
+}
+
+.middle-week {
+  background: #55efc4;
+}
+
+.blur {
+  opacity: 0.6;
+}
+
+.fake-block {
+  background: transparent;
+  color: transparent;
+  border: none;
+}
+
+/* in-flight clone */
+.gu-mirror {
+  position: fixed !important;
+  margin: 0 !important;
+  z-index: 9999 !important;
+  opacity: 0.8;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+  filter: alpha(opacity=80);
+  pointer-events: none;
+}
+
+/* high-performance display:none; helper */
+.gu-hide {
+  left: -9999px !important;
+}
+
+/* added to mirrorContainer (default = body) while dragging */
+.gu-unselectable {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+
+/* added to the source element while its mirror is dragged */
+.gu-transit {
+  opacity: 0.2;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+  filter: alpha(opacity=20);
+}
+
+.content-frame {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
+                                   supported by Chrome and Opera */
+}
