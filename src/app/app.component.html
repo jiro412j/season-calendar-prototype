@@ -12,7 +12,7 @@
           <span *ngIf="day !== 'hello'">{{ day }}</span>
         </div>
       </div>
-      <div *ngFor="let month of monthList; let monthIndex = index" class="flex-1">
+      <div *ngFor="let month of monthList; let monthIndex = index;" class="flex-1 month">
         <div class="month-name">
           {{ month.name }}
         </div>
@@ -24,7 +24,7 @@
           </div>
           <div *ngIf="obj.date === 'hello'" class="date-index flex-1"></div>
           <div class="d-flex flex-1" dragula="VAMPIRES" [(dragulaModel)]="obj.match_day">
-            <div class="match-day" *ngFor="let matchDay of obj.match_day" [ngStyle]="{'height': ((matchDay.date_range + 1) * 35) + 'px', 'background-color': matchDay.color}">
+            <div class="match-day" *ngFor="let matchDay of obj.match_day" attr.data-range="{{matchDay.date_range}}" [ngStyle]="{'height': ((matchDay.date_range + 1) * 35) + 'px', 'background-color': matchDay.color}">
               {{ matchDay.short_name || matchDay.name }}
             </div>
           </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DragulaService } from 'ng2-dragula';
 import * as _ from 'lodash';
@@ -83,12 +83,95 @@ export class AppComponent implements OnInit {
   subs = new Subscription();
   isAdmin = false;
 
-  constructor(private dragulaService: DragulaService) {
+  constructor(private dragulaService: DragulaService, private elementRef: ElementRef) {
     this.subs.add(
       this.dragulaService.dropModel('VAMPIRES').subscribe(({ sourceModel, targetModel, item }) => {
         this.draggedMatchDay = item;
+        if (targetModel.indexOf(undefined) !== -1) {
+          targetModel.splice(targetModel.indexOf(undefined), 1);
+        }
+        setTimeout(this.fixDragula.bind(this), 10);
       })
     );
+  }
+
+  fixDragula() {
+    const monthList = this.elementRef.nativeElement.querySelectorAll('.month');
+    const empty: any = document.createElement('div');
+    empty.innerHTML = 'empty';
+    empty.className = 'empty';
+    for (let i = 0; i < monthList.length; i++) {
+      let month = {
+        days: []
+      };
+      let days = monthList[i].querySelectorAll('div.calendar-block [dragula]');
+      for (let n = 0; n < days.length; n++) {
+        let matches = days[n].querySelectorAll('div[data-range]');
+        let matchDays = [];
+        for (let z = 0; z < matches.length; z++) {
+          matchDays.push({
+            el: matches[z],
+            date_range: parseInt(matches[z].getAttribute('data-range')),
+            short_name: matches[z].innerHTML
+          });
+        }
+        month.days.push({
+          el: days[n],
+          matchDays: matchDays,
+          affects: [],
+          items: []
+        });
+      }
+      let max = 0;
+      for (let n = 0; n < month.days.length; n++) {
+        for (let z = 0; z < month.days[n].matchDays.length; z++) {
+          for (let y = 2; y <= month.days[n].matchDays[z].date_range + 1; y++) {
+            if (month.days[n + y - 1]) {
+              month.days[n + y - 1].affects.push(month.days[n].matchDays[z].short_name);
+            }
+          }
+        }
+        max =
+          max < month.days[n].affects.length + month.days[n].matchDays.length
+            ? month.days[n].affects.length + month.days[n].matchDays.length
+            : max;
+      }
+      for (let n = 0; n < month.days.length; n++) {
+        for (let z = 0; z < month.days[n].matchDays.length; z++) {
+          let index = -1;
+          do {
+            index++;
+          } while (month.days[n].items[index]);
+          month.days[n].items[index] = month.days[n].matchDays[z];
+          for (let y = 2; y <= month.days[n].matchDays[z].date_range + 1; y++) {
+            if (month.days[n + y - 1]) {
+              month.days[n + y - 1].items[index] = month.days[n].matchDays[z].short_name;
+            }
+          }
+        }
+        for (let y = 0; y < max; y++) {
+          if (!month.days[n].items[y]) {
+            month.days[n].items[y] = ' ';
+          }
+        }
+        let emptyes = Array.prototype.slice.call(month.days[n].el.querySelectorAll('.empty'), 0);
+        _.forEach(emptyes, function(el) {
+          el.parentNode.removeChild(el);
+        });
+        month.days[n].items = month.days[n].items.reverse();
+        let before = null;
+        for (let y = 0; y < month.days[n].items.length; y++) {
+          if (month.days[n].items[y].el) {
+            before = month.days[n].items[y].el;
+          } else {
+            let clone = empty.cloneNode(true);
+            clone.innerHTML = month.days[n].items[y];
+            month.days[n].el.insertBefore(clone, before);
+            before = clone;
+          }
+        }
+      }
+    }
   }
 
   ngOnInit() {
@@ -141,6 +224,7 @@ export class AppComponent implements OnInit {
       });
     });
     this.addMatchDayToCalendar();
+    setTimeout(this.fixDragula.bind(this), 10);
   }
 
   addMatchDayToCalendar() {
